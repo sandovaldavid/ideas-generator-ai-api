@@ -29,7 +29,7 @@ export class AIService {
     El objetivo es proporcionar un plan de contenido listo para usar. Piensa que le estás entregando esto a "Alex", el dueño del negocio, quien necesita saber no solo "qué" publicar, sino "cómo" hacerlo de la manera más efectiva y rápida posible.
 
     # [TAREA]
-    Genera EXACTAMENTE 5 ideas de contenido para un negocio de "${businessType}". Las ideas deben ser variadas y cubrir las siguientes categorías (una por idea, sin repetir): "consejo útil", "pregunta interactiva", "promoción especial", "contenido educativo" y "detrás de cámaras".
+    Genera EXACTAMENTE 6 ideas de contenido para un negocio de "${businessType}". Las ideas deben ser variadas y cubrir las siguientes categorías (una por idea, sin repetir): "consejo útil", "pregunta interactiva", "promoción especial", "contenido educativo", "detrás de cámaras" y "tendencia viral".
 
     # [REGLAS DE SALIDA]
     1.  **Respuesta Exclusiva en JSON:** Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido, sin ningún texto, explicación o markdown antes o después.
