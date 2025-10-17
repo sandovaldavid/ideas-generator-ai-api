@@ -249,10 +249,6 @@ backend/
 │   ├── types/               # Definiciones de tipos TypeScript
 │   │   └── index.ts         # Tipos e interfaces
 │   └── index.ts             # Punto de entrada principal
-├── docs/
-│   ├── ARQUITECTURA.md      # Documentación de arquitectura
-│   ├── GEMINI-SETUP.md      # Guía de configuración Gemini
-│   └── OPENAI-SETUP.md      # Guía de configuración OpenAI
 ├── .env                     # Variables de entorno (no committed)
 ├── .env.example             # Ejemplo de variables de entorno
 ├── .gitignore
