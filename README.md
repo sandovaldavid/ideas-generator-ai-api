@@ -325,3 +325,22 @@ MIT
 ## 🤝 Contribuciones
 
 Las contribuciones son bienvenidas. Por favor, abre un issue o pull request.
+
+## 📧 Contacto | Hablemos
+
+¡Gracias por revisar mi proyecto!
+
+Soy **DevSandoval** (Juan David Sandoval), Ingeniero Informático. Mi filosofía es simple: **la mejor tecnología es la que resuelve un problema real**.
+
+Si buscas un desarrollador que entiende tanto el código como el valor de negocio, me encantaría conectar contigo.
+
+[![Portafolio Web](https://img.shields.io/badge/Portafolio_Web-DevSandoval-8b5cf6?style=for-the-badge&logo=rocket)](https://devsandoval.me)
+[![Agenda una reunión](https://img.shields.io/badge/Calendly-Agendar_Reunión-3c82f1?style=for-the-badge&logo=calendly)](https://calendly.com/devsandoval/30min)
+[![Mi Perfil de LinkedIn](https://img.shields.io/badge/LinkedIn-DevSandoval-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/devsandoval)
+[![Ver mi Código (GitHub)](https://img.shields.io/badge/GitHub-sandovaldavid-181717?style=for-the-badge&logo=github)](https://github.com/sandovaldavid)
+
+---
+
+**Desarrollado usando node js + bun + Elysia + TypeScript**
+
+🌟 ¡Si te gusta este proyecto, dale una estrella!
