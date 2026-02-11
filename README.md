@@ -20,6 +20,7 @@
 - **Structured Output**: Transforms unstructured LLM text into strict JSON for frontend consumption.
 - **Multi-Provider Support**: Seamlessly switches between Google Gemini and OpenAI via configuration.
 - **High Performance**: Built on Bun, minimizing API overhead to < 5ms (excluding LLM latency).
+- **Protection**: Integrated rate limiting (6 req/min) to prevent abuse and manage AI costs.
 
 ---
 
@@ -29,7 +30,7 @@ This project implements a **Layered Architecture** to separate concerns between 
 
 ```
 ┌─────────────────┐
-│   Presentation  │  Elysia Router & Controllers (HTTP, Validation)
+│   Presentation  │  Elysia Router & Controllers (HTTP, Validation, Rate Limiting)
 ├─────────────────┤
 │     Service     │  AIService (Prompt Engineering, Provider Abstraction)
 ├─────────────────┤
@@ -60,10 +61,10 @@ This project implements a **Layered Architecture** to separate concerns between 
 - **Rationale**: The core value is on-demand generation. User accounts and history add complexity/cost not needed for the MVP.
 - **Impact**: Lower hosting costs, simpler deployment, but users cannot "save" their history server-side.
 
-**Trade-off 3: JSON Parsing Strategy**
-- **Decision**: Strict regex-based extraction + JSON.parse.
-- **Rationale**: LLMs often wrap JSON in markdown code blocks (```json ... ```).
-- **Impact**: Robustness against LLM formatting variances, ensuring the frontend always receives valid JSON.
+**Trade-off 3: In-Memory Rate Limiting**
+- **Decision**: In-memory sliding window limiter.
+- **Rationale**: Simple to implement without external dependencies (Redis) for a single-instance deployment.
+- **Impact**: Rate limits reset on server restart and don't sync across multiple replicas (acceptable for current scale).
 
 ---
 
@@ -116,6 +117,7 @@ Since this is an AI-wrapper API, the total response time is heavily dependent on
    AI_API_KEY=your_api_key_here
    AI_PROVIDER=gemini # or 'openai'
    PORT=3000
+   ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
    ```
 
 4. **Start the Server**
@@ -145,9 +147,10 @@ curl http://localhost:3000/api/status
 - **Niche Adaptation**: Dynamic prompt injection based on the user's `businessType`.
 
 **API Capabilities**
-- **Validation**: Strict input validation (max length 100 chars for business type) to prevent prompt injection or excessive token usage.
-- **Error Handling**: Global error handler for AI timeouts, rate limits, or malformed responses.
-- **CORS**: Configured for frontend integration (e.g., React/Angular/Vue).
+- **Validation**: Strict input validation: `businessType` must be a non-empty string with max 100 characters.
+- **Rate Limiting**: Sliding window limiter (6 requests/minute per IP) to prevent abuse.
+- **Health Checks**: Endpoints at `/` and `/api/status` for monitoring.
+- **CORS**: Configurable origins for frontend integration.
 
 ---
 
@@ -216,13 +219,12 @@ We engineered a "Role-Playing" prompt structure:
 ├── src/
 │   ├── config/               # Environment and CORS config
 │   ├── controllers/          # Request handlers (Input -> Service -> Output)
-│   ├── middleware/           # Error handling, Logging
+│   ├── middleware/           # Rate Limiting, Validation, Error Handling
 │   ├── routes/               # API Endpoint definitions
 │   ├── services/             # Core Logic (AI Integration, Prompting)
 │   ├── types/                # TypeScript Interfaces
 │   ├── utils/                # Shared utilities
 │   └── index.ts              # App entry point
-├── tests/                    # (Future) Unit and Integration tests
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -249,12 +251,13 @@ Ensure these are set in your cloud provider (Render, Railway, AWS):
 - `AI_API_KEY`: Your private key.
 - `AI_PROVIDER`: `gemini` or `openai`.
 - `NODE_ENV`: Set to `production`.
+- `ALLOWED_ORIGINS`: Comma-separated list of allowed frontend domains.
 
 ---
 
 ## Roadmap
 
-- [ ] **Rate Limiting**: Implement sliding window rate limiting per IP.
+- [ ] **Distributed Rate Limiting**: Move from in-memory to Redis for horizontal scaling.
 - [ ] **Response Caching**: Cache results for identical business types to save tokens.
 - [ ] **Image Generation**: Integrate DALL-E 3 or Midjourney for post visuals.
 - [ ] **User Accounts**: Save history and favorite ideas (requires DB).
