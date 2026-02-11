@@ -8,13 +8,19 @@ export class AIService {
   private openaiClient: OpenAI | null = null;
   private provider: "gemini" | "openai";
 
-  constructor(config: AIServiceConfig) {
+  constructor(
+    config: AIServiceConfig,
+    geminiClient?: GoogleGenAI,
+    openaiClient?: OpenAI
+  ) {
     this.provider = config.provider;
 
     if (this.provider === "gemini") {
-      this.geminiClient = new GoogleGenAI({ apiKey: config.apiKey });
+      this.geminiClient =
+        geminiClient || new GoogleGenAI({ apiKey: config.apiKey });
     } else if (this.provider === "openai") {
-      this.openaiClient = new OpenAI({ apiKey: config.apiKey });
+      this.openaiClient =
+        openaiClient || new OpenAI({ apiKey: config.apiKey });
     }
   }
 
@@ -123,7 +129,7 @@ export class AIService {
   /**
    * Parsea la respuesta de la IA y extrae las ideas
    */
-  private parseAIResponse(text: string): Idea[] {
+  public parseAIResponse(text: string): Idea[] {
     try {
       // Intenta extraer JSON del texto (a veces viene con markdown)
       const jsonMatch = text.match(/\{[\s\S]*\}/);
