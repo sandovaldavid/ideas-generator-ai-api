@@ -60,7 +60,7 @@ export class AIService {
    * Llama a la API de Gemini usando la librería oficial
    */
   private async callGemini(prompt: string): Promise<Idea[]> {
-    const model = "gemini-2.0-flash-exp";
+    const model = 'gemini-2.0-flash';
 
     if (!this.geminiClient) {
       throw new Error("Cliente de Gemini no inicializado");
